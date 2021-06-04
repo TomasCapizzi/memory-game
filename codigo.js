@@ -215,7 +215,7 @@ function gameOver() {
 
 
 function opacidad(element) {
-    element.style.opacity = 0.2;
+    element.style.opacity = 0;
 }
 
 
