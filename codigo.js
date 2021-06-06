@@ -3,6 +3,7 @@ const btnPlay = document.getElementById('play');
 const cartas = [{
         codigo: 1,        
         id: 1,
+        estado: false,
         nombre: 'oceano',
         src: 'https://images.unsplash.com/photo-1468581264429-2548ef9eb732?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
     }, {
@@ -115,12 +116,13 @@ function crearTablero() {
         setTimeout(() => {
             carta.addEventListener('click', () => { // evento click al clickear imagen
                 carta.style.opacity = 1; //Muestro la imagen
-                guardarElección(cartas[i]); //Guardamos eleccion                
-                
+                guardarElección(cartas[i]); //Guardamos eleccion                 
                 if ((eleccion.length % 2) == 0 && eleccion.length > 1) {
                     controlarResultado(eleccion[0].id, eleccion[1].id,eleccion[0].codigo, eleccion[1].codigo ,imgClickeada, carta);
+
                 } //Controlo los resultados en nros pares, osea al segundo click          
-                imgClickeada = true;
+            imgClickeada=true
+
             });
         }, 3300)
 
@@ -136,9 +138,16 @@ function crearTablero() {
 
 
 function controlarResultado(valor1, valor2, codigo1, codigo2,estado,carta) {
+
     if(estado){
-        console.log('No vale!');
-        return eleccion=[];
+        if(codigo1 == codigo2){
+            console.log('No puedes clickear la misma imagen');
+            return eleccion.splice(1,1);
+        } else{
+            console.log('No vale')
+            return eleccion=[];
+        }      
+        
     }else if (opcionesCorrectas < 5) { // Ejecuta hasta antes de adivinar la última
         if (valor1 == valor2 && codigo1 != codigo2) { // Si los valores elegidos son iguales
             opcionesCorrectas++; //Suma la opcion
@@ -146,8 +155,8 @@ function controlarResultado(valor1, valor2, codigo1, codigo2,estado,carta) {
             return eleccion = []; //Borra el array
         }else if(codigo1 == codigo2){
             console.log('No puedes clickear la misma imagen');
-            return eleccion.splice(1,1)
-        } 
+            return eleccion.splice(1,1);
+        }
         else if (vidasRestantes == 2) { //En cambio si no son correctas
             console.log('Incorrecto');
             descontarVida(vida1)
@@ -195,12 +204,10 @@ function descontarVida(vida) {
 }
 
 
-function guardarElección(valor) {
-    if (eleccion.length <= 2) {
-        eleccion.push(valor);
+function guardarElección(valor) {    
+    if (eleccion.length <= 2) {       
+       eleccion.push(valor);
     }
-
-
 }
 
 function gameOver() {
@@ -215,7 +222,7 @@ function gameOver() {
 
 
 function opacidad(element) {
-    element.style.opacity = 0;
+    element.style.opacity = 0.2;
 }
 
 
